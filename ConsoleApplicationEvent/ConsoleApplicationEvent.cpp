@@ -3,9 +3,8 @@
 #include <stdio.h>
 #include <winevt.h>
 #include <iostream>
-
+#include <string>
 #pragma comment(lib, "wevtapi.lib")
-
 #define ARRAY_SIZE 10
 #define TIMEOUT 1000  // 1 second; Set and use in place of INFINITE in EvtNext call
 
@@ -21,24 +20,43 @@ DWORD PrintQueryStatuses(EVT_HANDLE hResults);
 DWORD GetQueryStatusProperty(EVT_QUERY_PROPERTY_ID Id, EVT_HANDLE hResults, PEVT_VARIANT& pProperty);
 DWORD PrintResults(EVT_HANDLE hResults);
 DWORD PrintEvent(EVT_HANDLE hEvent);  // Shown in the Rendering Events topic
+std::wstring s2ws(const std::string& s);
 
 int main(void)
 {
     int command;
-
     std::cout << "Available commands:" << std::endl;
     std::cout << "1. Show all event log" << std::endl;
     std::cout << "2. Add event" << std::endl;
     std::cout << "3. Remove event " << std::endl;
-    std::cout << "Enter the number and press Enter " << std::endl;
-
+    std::cout << "Enter the number and press Enter ";
     std::cin >> command;
 
     if (command == 1) {
+
+        std::cout << "Enter Query Path:";
+        std::cin.ignore();
+        std::string queryPath;
+        std::getline(std::cin, queryPath);
+        std::wstring queryPathW = s2ws(queryPath);
+
+        int eventID;
+        std::cout << "Enter EventID:";
+        std::cin >> eventID;
+
+        std::wstring queryW  = \
+            L"<QueryList>" \
+            L"  <Query Path='" + queryPathW + "'>" \
+            L"    <Select>Event/System[EventID=3]</Select>" \
+            L"  </Query>" \
+            L"</QueryList>";
+
+        LPCWSTR queryL = queryW.c_str();
+
         DWORD status = ERROR_SUCCESS;
         EVT_HANDLE hResults = NULL;
 
-        hResults = EvtQuery(NULL, NULL, QUERY, EvtQueryChannelPath | EvtQueryTolerateQueryErrors);
+        hResults = EvtQuery(NULL, NULL, queryL, EvtQueryChannelPath | EvtQueryTolerateQueryErrors);
         if (NULL == hResults)
         {
             // Handle error.
@@ -56,6 +74,18 @@ int main(void)
             EvtClose(hResults);
     }
 
+}
+
+std::wstring s2ws(const std::string& s)
+{
+    int len;
+    int slength = (int)s.length() + 1;
+    len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+    wchar_t* buf = new wchar_t[len];
+    MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+    std::wstring r(buf);
+    delete[] buf;
+    return r;
 }
 
 // Enumerate all the events in the result set. 
