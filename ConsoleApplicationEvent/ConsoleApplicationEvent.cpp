@@ -2,6 +2,7 @@
 #include <sddl.h>
 #include <stdio.h>
 #include <winevt.h>
+#include <iostream>
 
 #pragma comment(lib, "wevtapi.lib")
 
@@ -23,26 +24,37 @@ DWORD PrintEvent(EVT_HANDLE hEvent);  // Shown in the Rendering Events topic
 
 int main(void)
 {
-    DWORD status = ERROR_SUCCESS;
-    EVT_HANDLE hResults = NULL;
+    int command;
 
-    hResults = EvtQuery(NULL, NULL, QUERY, EvtQueryChannelPath | EvtQueryTolerateQueryErrors);
-    if (NULL == hResults)
-    {
-        // Handle error.
-        goto cleanup;
+    std::cout << "Available commands:" << std::endl;
+    std::cout << "1. Show all event log" << std::endl;
+    std::cout << "2. Add event" << std::endl;
+    std::cout << "3. Remove event " << std::endl;
+    std::cout << "Enter the number and press Enter " << std::endl;
+
+    std::cin >> command;
+
+    if (command == 1) {
+        DWORD status = ERROR_SUCCESS;
+        EVT_HANDLE hResults = NULL;
+
+        hResults = EvtQuery(NULL, NULL, QUERY, EvtQueryChannelPath | EvtQueryTolerateQueryErrors);
+        if (NULL == hResults)
+        {
+            // Handle error.
+            goto cleanup;
+        }
+
+        // Print the status of each query. If all the queries succeeded,
+        // print the events in the result set. The status can be
+        // ERROR_EVT_CHANNEL_NOT_FOUND or ERROR_EVT_INVALID_QUERY among others.
+        if (ERROR_SUCCESS == PrintQueryStatuses(hResults))
+            PrintResults(hResults);
+    cleanup:
+
+        if (hResults)
+            EvtClose(hResults);
     }
-
-    // Print the status of each query. If all the queries succeeded,
-    // print the events in the result set. The status can be
-    // ERROR_EVT_CHANNEL_NOT_FOUND or ERROR_EVT_INVALID_QUERY among others.
-    if (ERROR_SUCCESS == PrintQueryStatuses(hResults))
-        PrintResults(hResults);
-
-cleanup:
-
-    if (hResults)
-        EvtClose(hResults);
 
 }
 
