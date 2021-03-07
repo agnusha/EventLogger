@@ -26,7 +26,7 @@ int main(void)
 {
     int command;
     std::cout << "Available commands:" << std::endl;
-    std::cout << "1. Show all event log" << std::endl;
+    std::cout << "1. Show event log by Channel and Event id" << std::endl;
     std::cout << "2. Add event" << std::endl;
     std::cout << "3. Remove event " << std::endl;
     std::cout << "Enter the number and press Enter ";
@@ -34,20 +34,21 @@ int main(void)
 
     if (command == 1) {
 
-        std::cout << "Enter Query Path:";
+        std::cout << "Enter Channel:";
         std::cin.ignore();
         std::string queryPath;
         std::getline(std::cin, queryPath);
         std::wstring queryPathW = s2ws(queryPath);
 
-        int eventID;
-        std::cout << "Enter EventID:";
-        std::cin >> eventID;
+        std::cout << "Enter Event id:";
+        std::string eventID;
+        std::getline(std::cin, eventID);
+        std::wstring eventIDhW = s2ws(eventID);
 
         std::wstring queryW  = \
             L"<QueryList>" \
             L"  <Query Path='" + queryPathW + "'>" \
-            L"    <Select>Event/System[EventID=3]</Select>" \
+            L"    <Select>Event/System[EventID=" + eventIDhW + "]</Select>" \
             L"  </Query>" \
             L"</QueryList>";
 
