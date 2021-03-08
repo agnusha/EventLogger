@@ -4,6 +4,8 @@
 #include <winevt.h>
 #include <iostream>
 #include <string>
+#include <sstream>
+using namespace std;
 #pragma comment(lib, "wevtapi.lib")
 #define ARRAY_SIZE 10
 #define TIMEOUT 1000  // 1 second; Set and use in place of INFINITE in EvtNext call
@@ -20,32 +22,33 @@ DWORD PrintQueryStatuses(EVT_HANDLE hResults);
 DWORD GetQueryStatusProperty(EVT_QUERY_PROPERTY_ID Id, EVT_HANDLE hResults, PEVT_VARIANT& pProperty);
 DWORD PrintResults(EVT_HANDLE hResults);
 DWORD PrintEvent(EVT_HANDLE hEvent);  // Shown in the Rendering Events topic
-std::wstring s2ws(const std::string& s);
+wstring s2ws(const string& s);
+BOOL DeleteRecord(LPWSTR ReadPath, LPWSTR lpEventRecordId);
 
 int main(void)
 {
     int command;
-    std::cout << "Available commands:" << std::endl;
-    std::cout << "1. Show event log by Channel and Event id" << std::endl;
-    std::cout << "2. Add event" << std::endl;
-    std::cout << "3. Remove event " << std::endl;
-    std::cout << "Enter the number and press Enter ";
-    std::cin >> command;
+    cout << "Available commands:" << endl;
+    cout << "1. Show event log by Channel and Event id" << endl;
+    cout << "2. Add event" << endl;
+    cout << "3. Remove event " << endl;
+    cout << "Enter the number and press Enter " << endl;
+    cin >> command;
 
     if (command == 1) {
 
-        std::cout << "Enter Channel:";
-        std::cin.ignore();
-        std::string queryPath;
-        std::getline(std::cin, queryPath);
-        std::wstring queryPathW = s2ws(queryPath);
+        cout << "Enter Channel:";
+        cin.ignore();
+        string queryPath;
+        getline(cin, queryPath);
+        wstring queryPathW = s2ws(queryPath);
 
-        std::cout << "Enter Event id:";
-        std::string eventID;
-        std::getline(std::cin, eventID);
-        std::wstring eventIDhW = s2ws(eventID);
+        cout << "Enter Event id:";
+        string eventID;
+        getline(cin, eventID);
+        wstring eventIDhW = s2ws(eventID);
 
-        std::wstring queryW  = \
+        wstring queryW  = \
             L"<QueryList>" \
             L"  <Query Path='" + queryPathW + "'>" \
             L"    <Select>Event/System[EventID=" + eventIDhW + "]</Select>" \
@@ -74,19 +77,95 @@ int main(void)
         if (hResults)
             EvtClose(hResults);
     }
+    //create event
+    else if (command == 2) {
+            cout << "Enter Type (SUCCESS, ERROR, WARNING, INFORMATION) :";
+            cin.ignore();
+            string type;
+            getline(cin, type);
+
+            cout << "Enter Event id (1-1000):";
+            string eventID;
+            getline(cin, eventID);
+
+            cout << "Enter source:";
+            string source;
+            getline(cin, source);
+
+            cout << "Enter description:";
+            string description;
+            getline(cin, description);
+
+            stringstream ss;
+            ss << "EventCreate /t " << type << " /id " << eventID << " /l APPLICATION /so " << source << " /d \"" << description << "\"";
+            system(ss.str().c_str());
+    }
+
+    //delete event
+    else if (command == 3) {
+        cout << "Enter Event id (1-1000):";
+        cin.ignore();
+        string eventID;
+        getline(cin, eventID);
+
+        cout << "Enter source:";
+        string source;
+        getline(cin, source);
+
+        wchar_t ReadPath[100];
+        swprintf(ReadPath, 100, L"%hs", "setup.evtx");
+        _wcslwr_s(ReadPath, wcslen(ReadPath) + 1);
+
+        wchar_t lpEventRecordId[100];
+        swprintf(lpEventRecordId, 100, L"%hs", "78");
+        _wcslwr_s(lpEventRecordId, wcslen(lpEventRecordId) + 1);
+
+        if (DeleteRecord(ReadPath, lpEventRecordId))
+            cout << "Delete success" << endl;
+        else
+            cout << "Delete error" << endl;
+
+    }
 
 }
 
-std::wstring s2ws(const std::string& s)
+wstring s2ws(const string& s)
 {
     int len;
     int slength = (int)s.length() + 1;
     len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
     wchar_t* buf = new wchar_t[len];
     MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
-    std::wstring r(buf);
+    wstring r(buf);
     delete[] buf;
     return r;
+}
+
+// DeleteRecord from event log
+BOOL DeleteRecord(LPWSTR ReadPath, LPWSTR lpEventRecordId)
+{
+    LPWSTR lpPath = new WCHAR[MAX_PATH];
+    LPWSTR lpQuery = new WCHAR[MAX_PATH];
+    LPWSTR lpTargetLogFile = new WCHAR[MAX_PATH];
+
+    ZeroMemory(lpPath, MAX_PATH);
+    ZeroMemory(lpQuery, MAX_PATH);
+    ZeroMemory(lpTargetLogFile, MAX_PATH);
+
+    GetSystemDirectory(lpPath, MAX_PATH);
+    lstrcat(lpPath, L"\\winevt\\logs\\");
+    lstrcat(lpPath, ReadPath);
+
+    lstrcat(lpQuery, L"Event/System[EventRecordID!=");
+    lstrcat(lpQuery, lpEventRecordId);
+    lstrcat(lpQuery, L"]");
+    lstrcat(lpTargetLogFile, L".\\temp.evtx");
+
+    if (!EvtExportLog(NULL, lpPath, lpQuery, lpTargetLogFile, EvtExportLogFilePath)) {
+        cout << "EvtExportLog error " << GetLastError() << endl;
+        return FALSE;
+    }
+    return TRUE;
 }
 
 // Enumerate all the events in the result set. 
