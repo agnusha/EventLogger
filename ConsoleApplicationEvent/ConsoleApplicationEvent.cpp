@@ -103,30 +103,31 @@ int main(void)
 
     //delete event
     else if (command == 3) {
-        cout << "Enter Event id (1-1000):";
+        cout << "Enter Event record id:";
         cin.ignore();
-        string eventID;
-        getline(cin, eventID);
+        std::string eventRecordId;
+        cin >> eventRecordId;
+        const char* eventRecordIdC = eventRecordId.c_str();
 
         cout << "Enter source:";
         string source;
-        getline(cin, source);
+        cin >> source;
+        source += ".evtx";
+        const char* sourceC = source.c_str();
 
         wchar_t ReadPath[100];
-        swprintf(ReadPath, 100, L"%hs", "setup.evtx");
+        swprintf(ReadPath, 100, L"%hs", sourceC);
         _wcslwr_s(ReadPath, wcslen(ReadPath) + 1);
 
         wchar_t lpEventRecordId[100];
-        swprintf(lpEventRecordId, 100, L"%hs", "78");
+        swprintf(lpEventRecordId, 100, L"%hs", eventRecordIdC);
         _wcslwr_s(lpEventRecordId, wcslen(lpEventRecordId) + 1);
 
         if (DeleteRecord(ReadPath, lpEventRecordId))
             cout << "Delete success" << endl;
         else
             cout << "Delete error" << endl;
-
     }
-
 }
 
 wstring s2ws(const string& s)
