@@ -32,6 +32,7 @@ int main(void)
     cout << "1. Show event log by Channel and Event id" << endl;
     cout << "2. Add event" << endl;
     cout << "3. Remove event " << endl;
+    cout << "4. Clear All Event Logs " << endl;
     cout << "Enter the number and press Enter " << endl;
     cin >> command;
 
@@ -127,6 +128,9 @@ int main(void)
             cout << "Delete success" << endl;
         else
             cout << "Delete error" << endl;
+    }
+    else if (command == 4) {
+        system("for /F \"tokens=*\" %1 in ('wevtutil.exe el') DO wevtutil.exe cl \"%1\"");
     }
 }
 
