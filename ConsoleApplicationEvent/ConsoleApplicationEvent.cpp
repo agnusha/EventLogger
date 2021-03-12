@@ -5,18 +5,13 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-using namespace std;
-#pragma comment(lib, "wevtapi.lib")
-#define ARRAY_SIZE 10
-#define TIMEOUT 1000  // 1 second; Set and use in place of INFINITE in EvtNext call
 
-// The structured XML query.
-#define QUERY \
-    L"<QueryList>" \
-    L"  <Query Path='System'>" \
-    L"    <Select>Event/System[EventID=3]</Select>" \
-    L"  </Query>" \
-    L"</QueryList>"
+using namespace std;
+
+#pragma comment(lib, "wevtapi.lib")
+
+#define ARRAY_SIZE 10
+
 
 DWORD PrintQueryStatuses(EVT_HANDLE hResults);
 DWORD GetQueryStatusProperty(EVT_QUERY_PROPERTY_ID Id, EVT_HANDLE hResults, PEVT_VARIANT& pProperty);
@@ -29,30 +24,38 @@ int main(void)
 {
     int command;
     cout << "Available commands:" << endl;
-    cout << "1. Show event log by Channel and Event id" << endl;
-    cout << "2. Add event" << endl;
-    cout << "3. Remove event " << endl;
-    cout << "4. Clear All Event Logs " << endl;
+    cout << "1. Show event log by Channel and Date period" << endl;
+    cout << "2. Show event log by Channel and Event id" << endl;
+    cout << "3. Add event" << endl;
+    cout << "4. Remove event " << endl;
+    cout << "5. Clear All Event Logs " << endl;
     cout << "Enter the number and press Enter " << endl;
     cin >> command;
 
     if (command == 1) {
-
-        cout << "Enter Channel:";
+        cout << "Enter Channel (Application, Security, Setup, System, ForwardedEvents): ";
         cin.ignore();
         string queryPath;
         getline(cin, queryPath);
         wstring queryPathW = s2ws(queryPath);
 
-        cout << "Enter Event id:";
-        string eventID;
-        getline(cin, eventID);
-        wstring eventIDhW = s2ws(eventID);
+        cout << "Enter start date (2021-03-01T14:00:00 - for example): ";
+        string startDate;
+        getline(cin, startDate);
+        wstring startDatehW = s2ws(startDate);
 
-        wstring queryW  = \
+        cout << "Enter end date (2021-03-31T14:00:00 - for example): ";
+        string endDate;
+        getline(cin, endDate);
+        wstring endDateW = s2ws(endDate);
+
+        wstring queryW = \
             L"<QueryList>" \
-            L"  <Query Path='" + queryPathW + "'>" \
-            L"    <Select>Event/System[EventID=" + eventIDhW + "]</Select>" \
+            L"  <Query Path='Application'>" \
+            L"    <Select Path='" + queryPathW + "'>" \
+            L"    *[System[TimeCreated[@SystemTime&gt;='" + startDatehW + ".000Z'" \
+            L"      and @SystemTime&lt;='" + endDateW + ".999Z']]]" \
+            L"    </Select>" \
             L"  </Query>" \
             L"</QueryList>";
 
@@ -64,22 +67,53 @@ int main(void)
         hResults = EvtQuery(NULL, NULL, queryL, EvtQueryChannelPath | EvtQueryTolerateQueryErrors);
         if (NULL == hResults)
         {
-            // Handle error.
-            goto cleanup;
+            if (hResults)
+                EvtClose(hResults);
         }
 
-        // Print the status of each query. If all the queries succeeded,
-        // print the events in the result set. The status can be
-        // ERROR_EVT_CHANNEL_NOT_FOUND or ERROR_EVT_INVALID_QUERY among others.
         if (ERROR_SUCCESS == PrintQueryStatuses(hResults))
             PrintResults(hResults);
-    cleanup:
+    }
 
-        if (hResults)
-            EvtClose(hResults);
+    else if (command == 2) {
+
+        cout << "Enter Channel (Application, Security, Setup, System, ForwardedEvents):";
+        cin.ignore();
+        string queryPath;
+        getline(cin, queryPath);
+        wstring queryPathW = s2ws(queryPath);
+
+        cout << "Enter Event id:";
+        string eventID;
+        getline(cin, eventID);
+        wstring eventIDhW = s2ws(eventID);
+
+        wstring queryW = \
+            L"<QueryList>" \
+            L"  <Query Path='Application'>" \
+            L"    <Select Path='" + queryPathW + "'>" \
+            L"    Event/System[EventID=" + eventIDhW + "]" \
+            L"    </Select>" \
+            L"  </Query>" \
+            L"</QueryList>";
+
+        LPCWSTR queryL = queryW.c_str();
+
+        DWORD status = ERROR_SUCCESS;
+        EVT_HANDLE hResults = NULL;
+
+        hResults = EvtQuery(NULL, NULL, queryL, EvtQueryChannelPath | EvtQueryTolerateQueryErrors);
+        if (NULL == hResults)
+        {
+            if (hResults)
+                EvtClose(hResults);
+        }
+
+        if (ERROR_SUCCESS == PrintQueryStatuses(hResults))
+            PrintResults(hResults);
     }
     //create event
-    else if (command == 2) {
+    else if (command == 3) {
             cout << "Enter Type (SUCCESS, ERROR, WARNING, INFORMATION) :";
             cin.ignore();
             string type;
@@ -103,7 +137,7 @@ int main(void)
     }
 
     //delete event
-    else if (command == 3) {
+    else if (command == 4) {
         cout << "Enter Event record id:";
         cin.ignore();
         std::string eventRecordId;
@@ -125,12 +159,17 @@ int main(void)
         _wcslwr_s(lpEventRecordId, wcslen(lpEventRecordId) + 1);
 
         if (DeleteRecord(ReadPath, lpEventRecordId))
-            cout << "Delete success" << endl;
+            cout << "Delete event success." << endl;
         else
-            cout << "Delete error" << endl;
+            cout << "Delete error." << endl;
     }
-    else if (command == 4) {
+    //delete all event log
+    else if (command == 5) {
         system("for /F \"tokens=*\" %1 in ('wevtutil.exe el') DO wevtutil.exe cl \"%1\"");
+        cout << "Delete event log." << endl;
+    }
+    else {
+        cout << "Unknown command." << endl;
     }
 }
 
