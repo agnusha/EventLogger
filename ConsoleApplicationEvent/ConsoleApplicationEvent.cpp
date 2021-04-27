@@ -12,6 +12,7 @@ using namespace std;
 
 #define ARRAY_SIZE 10
 
+FILE* f;
 
 DWORD PrintQueryStatuses(EVT_HANDLE hResults);
 DWORD GetQueryStatusProperty(EVT_QUERY_PROPERTY_ID Id, EVT_HANDLE hResults, PEVT_VARIANT& pProperty);
@@ -49,6 +50,18 @@ int main(void)
         getline(cin, endDate);
         wstring endDateW = s2ws(endDate);
 
+        cout << "Enter filename (file.txt - for example): ";
+        std::string filename;
+        cin >> filename;
+        const char* filenameC = filename.c_str();
+
+        errno_t err;
+        if ((err = fopen_s(&f, filenameC, "w")) != 0)
+        {
+            cout << "Error opening file!\n";
+            exit(1);
+        }
+
         wstring queryW = \
             L"<QueryList>" \
             L"  <Query Path='Application'>" \
@@ -73,6 +86,8 @@ int main(void)
 
         if (ERROR_SUCCESS == PrintQueryStatuses(hResults))
             PrintResults(hResults);
+
+        fclose(f);
     }
 
     else if (command == 2) {
@@ -378,6 +393,7 @@ DWORD PrintEvent(EVT_HANDLE hEvent)
     }
 
     wprintf(L"\n\n%s", pRenderedContent);
+    fwprintf(f, L"\n\n%s", pRenderedContent);
 
 cleanup:
 
