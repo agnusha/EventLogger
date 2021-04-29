@@ -1,0 +1,4 @@
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='iBtSiva'/><EventID Qualifiers='0'>2</EventID><Level>4</Level><Task>0</Task><Keywords>0x80000000000000</Keywords><TimeCreated SystemTime='2021-04-11T17:06:14.585543700Z'/><EventRecordID>1972411</EventRecordID><Channel>Application</Channel><Computer>EPBYMINW0BE3.minsk.epam.com</Computer><Security/></System><EventData><Data>iBtSiva</Data><Data>Siva worker stopping</Data></EventData></Event>
+
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='SecurityCenter'/><EventID Qualifiers='0'>2</EventID><Level>4</Level><Task>0</Task><Keywords>0x80000000000000</Keywords><TimeCreated SystemTime='2021-04-18T16:21:32.798574100Z'/><EventRecordID>1974546</EventRecordID><Channel>Application</Channel><Computer>EPBYMINW0BE3.minsk.epam.com</Computer><Security/></System><EventData></EventData></Event>
+
