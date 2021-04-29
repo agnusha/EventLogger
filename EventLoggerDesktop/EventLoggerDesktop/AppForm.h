@@ -123,24 +123,27 @@ namespace EventLoggerDesktop {
 			// 
 			this->listBox1->BackColor = System::Drawing::Color::LavenderBlush;
 			this->listBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->listBox1->Font = (gcnew System::Drawing::Font(L"Corbel", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
 			this->listBox1->FormattingEnabled = true;
-			this->listBox1->ItemHeight = 20;
+			this->listBox1->ItemHeight = 19;
 			this->listBox1->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
 				L"1. Show or export to file events by Channel and Period",
 					L"2. Show or export to file event by Channel and Id", L"3. Add custom event", L"4. Remove event", L"5. Clear All Event Logs"
 			});
 			this->listBox1->Location = System::Drawing::Point(43, 101);
 			this->listBox1->Name = L"listBox1";
-			this->listBox1->Size = System::Drawing::Size(450, 100);
+			this->listBox1->Size = System::Drawing::Size(461, 95);
 			this->listBox1->TabIndex = 2;
 			this->listBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &AppForm::listBox1_SelectedIndexChanged);
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
 			this->label1->Location = System::Drawing::Point(39, 65);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(128, 20);
+			this->label1->Size = System::Drawing::Size(178, 18);
 			this->label1->TabIndex = 3;
 			this->label1->Text = L"Select the action";
 			// 
@@ -161,9 +164,10 @@ namespace EventLoggerDesktop {
 			// label3
 			// 
 			this->label3->AutoSize = true;
+			this->label3->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
 			this->label3->Location = System::Drawing::Point(522, 79);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(68, 20);
+			this->label3->Size = System::Drawing::Size(78, 18);
 			this->label3->TabIndex = 5;
 			this->label3->Text = L"Channel";
 			this->label3->Visible = false;
@@ -192,15 +196,17 @@ namespace EventLoggerDesktop {
 			// label4
 			// 
 			this->label4->AutoSize = true;
+			this->label4->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
 			this->label4->Location = System::Drawing::Point(872, 79);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(54, 20);
+			this->label4->Size = System::Drawing::Size(68, 18);
 			this->label4->TabIndex = 8;
 			this->label4->Text = L"Period";
 			this->label4->Visible = false;
 			// 
 			// button1
 			// 
+			this->button1->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
 			this->button1->Location = System::Drawing::Point(526, 300);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(647, 44);
@@ -221,9 +227,10 @@ namespace EventLoggerDesktop {
 			// label5
 			// 
 			this->label5->AutoSize = true;
+			this->label5->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
 			this->label5->Location = System::Drawing::Point(701, 79);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(23, 20);
+			this->label5->Size = System::Drawing::Size(28, 18);
 			this->label5->TabIndex = 11;
 			this->label5->Text = L"Id";
 			this->label5->Visible = false;
@@ -231,9 +238,10 @@ namespace EventLoggerDesktop {
 			// checkBox1
 			// 
 			this->checkBox1->AutoSize = true;
+			this->checkBox1->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
 			this->checkBox1->Location = System::Drawing::Point(526, 252);
 			this->checkBox1->Name = L"checkBox1";
-			this->checkBox1->Size = System::Drawing::Size(123, 24);
+			this->checkBox1->Size = System::Drawing::Size(174, 22);
 			this->checkBox1->TabIndex = 12;
 			this->checkBox1->Text = L"Export to file";
 			this->checkBox1->UseVisualStyleBackColor = true;
@@ -246,9 +254,10 @@ namespace EventLoggerDesktop {
 			// label6
 			// 
 			this->label6->AutoSize = true;
+			this->label6->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
 			this->label6->Location = System::Drawing::Point(39, 256);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(55, 20);
+			this->label6->Size = System::Drawing::Size(68, 18);
 			this->label6->TabIndex = 13;
 			this->label6->Text = L"Result";
 			this->label6->Visible = false;
@@ -265,9 +274,10 @@ namespace EventLoggerDesktop {
 			// label7
 			// 
 			this->label7->AutoSize = true;
+			this->label7->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
 			this->label7->Location = System::Drawing::Point(701, 161);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(60, 20);
+			this->label7->Size = System::Drawing::Size(68, 18);
 			this->label7->TabIndex = 16;
 			this->label7->Text = L"Source";
 			this->label7->Visible = false;
