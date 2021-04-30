@@ -1,10 +1,3 @@
-#include <windows.h>
-#include <sddl.h>
-#include <stdio.h>
-#include <winevt.h>
-#include <iostream>
-#include <string>
-#include <sstream>
 #include <msclr/marshal_cppstd.h>
 #include "EventLogger.h"
 #include "CreateForm.h"

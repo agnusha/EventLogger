@@ -1,13 +1,7 @@
-#include <string>
 #include <windows.h>
-#include <sddl.h>
-#include <stdio.h>
 #include <winevt.h>
 #include <atlstr.h>
 #include <iostream>
-#include <string>
-#include <sstream>
-
 using namespace std;
 
 #pragma comment(lib, "wevtapi.lib")
