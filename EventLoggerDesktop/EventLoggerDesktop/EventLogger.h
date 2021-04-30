@@ -13,7 +13,6 @@ class EventLogger
     private:
         string result;
 
-
 	public:
         //todo destructor
         void close()
@@ -125,8 +124,7 @@ class EventLogger
         }
 
         // Get the list of paths in the query and the status for each path. Return
-        // the sum of the statuses, so the caller can decide whether to enumerate 
-        // the results.
+        // the sum of the statuses, so the caller can decide whether to enumerate the results.
         DWORD PrintQueryStatuses(EVT_HANDLE hResults)
         {
             DWORD status = ERROR_SUCCESS;
@@ -157,7 +155,6 @@ class EventLogger
 
             return status;
         }
-
 
         // Get the list of paths specified in the query or the list of status values 
         // for each path.

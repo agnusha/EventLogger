@@ -21,9 +21,6 @@ namespace EventLoggerDesktop {
 		AppForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
 		}
 
 	protected:
@@ -120,9 +117,10 @@ namespace EventLoggerDesktop {
 				static_cast<System::Byte>(204)));
 			this->listBox1->FormattingEnabled = true;
 			this->listBox1->ItemHeight = 19;
-			this->listBox1->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
+			this->listBox1->Items->AddRange(gcnew cli::array< System::Object^  >(6) {
 				L"1. Show or export to file events by Channel and Period",
-					L"2. Show or export to file event by Channel and Id", L"3. Add custom event", L"4. Remove event", L"5. Clear All Event Logs"
+					L"2. Show or export to file event by Channel and Id", L"3. Add custom event", L"4. Remove event", L"5. Clear All Event Logs",
+					L"6. Show help"
 			});
 			this->listBox1->Location = System::Drawing::Point(43, 101);
 			this->listBox1->Name = L"listBox1";
@@ -422,8 +420,8 @@ namespace EventLoggerDesktop {
 			system("for /F \"tokens=*\" %1 in ('wevtutil.exe el') DO wevtutil.exe cl \"%1\"");
 			MessageBox::Show("Event log was cleaned");
 		}
-
 	}
+
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		EventLogger _logger;
 		if (this->listBox1->SelectedIndex == 0)
