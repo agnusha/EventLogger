@@ -1,6 +1,7 @@
 #include <msclr/marshal_cppstd.h>
 #include "EventLogger.h"
 #include "CreateForm.h"
+#include "HelpForm.h"
 using namespace std;
 
 namespace EventLoggerDesktop {
@@ -419,6 +420,26 @@ namespace EventLoggerDesktop {
 
 			system("for /F \"tokens=*\" %1 in ('wevtutil.exe el') DO wevtutil.exe cl \"%1\"");
 			MessageBox::Show("Event log was cleaned");
+		}
+		else if (this->listBox1->SelectedIndex == 5)
+		{
+			this->label3->Visible = false;
+			this->label4->Visible = false;
+			this->label5->Visible = false;
+			this->label6->Visible = false;
+			this->label7->Visible = false;
+			this->richTextBox1->Visible = false;
+			this->listBox2->Visible = false;
+			this->dateTimePicker1->Visible = false;
+			this->dateTimePicker2->Visible = false;
+			this->numericUpDown1->Visible = false;
+			this->checkBox1->Visible = false;
+			this->textBox1->Visible = false;
+			this->button1->Visible = false;
+
+			HelpForm^ form = gcnew HelpForm(this);
+			form->Show();
+			this->Hide();
 		}
 	}
 

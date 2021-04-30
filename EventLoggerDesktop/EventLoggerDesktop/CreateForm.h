@@ -59,7 +59,7 @@ namespace EventLoggerDesktop {
 	private: System::Windows::Forms::NumericUpDown^ numericUpDown1;
 	private: System::Windows::Forms::TextBox^ textBox1;
 	private: System::Windows::Forms::TextBox^ textBox2;
-		   System::Windows::Forms::Form^ otherform;
+	private: System::Windows::Forms::Form^ otherform;
 
 #pragma region Windows Form Designer generated code
 		   /// <summary>

@@ -123,6 +123,7 @@
     <ClCompile Include="AppForm.cpp" />
     <ClCompile Include="CreateForm.cpp" />
     <ClCompile Include="EventLogger.cpp" />
+    <ClCompile Include="HelpForm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppForm.h">
@@ -132,6 +133,9 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="EventLogger.h" />
+    <ClInclude Include="HelpForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AppForm.resx">
@@ -139,6 +143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CreateForm.resx">
       <DependentUpon>CreateForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HelpForm.resx">
+      <DependentUpon>HelpForm.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
