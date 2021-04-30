@@ -112,8 +112,8 @@ namespace EventLoggerDesktop {
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Segoe Script", 16, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label2->ForeColor = System::Drawing::Color::Navy;
-			this->label2->Location = System::Drawing::Point(451, 0);
+			this->label2->ForeColor = System::Drawing::Color::DarkBlue;
+			this->label2->Location = System::Drawing::Point(504, -1);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(237, 53);
 			this->label2->TabIndex = 1;
@@ -133,7 +133,7 @@ namespace EventLoggerDesktop {
 			});
 			this->listBox1->Location = System::Drawing::Point(43, 101);
 			this->listBox1->Name = L"listBox1";
-			this->listBox1->Size = System::Drawing::Size(461, 95);
+			this->listBox1->Size = System::Drawing::Size(461, 133);
 			this->listBox1->TabIndex = 2;
 			this->listBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &AppForm::listBox1_SelectedIndexChanged);
 			// 
@@ -155,7 +155,7 @@ namespace EventLoggerDesktop {
 				L"Application", L"Security", L"Setup", L"System",
 					L"ForwardedEvents"
 			});
-			this->listBox2->Location = System::Drawing::Point(526, 117);
+			this->listBox2->Location = System::Drawing::Point(526, 101);
 			this->listBox2->Name = L"listBox2";
 			this->listBox2->Size = System::Drawing::Size(147, 104);
 			this->listBox2->TabIndex = 4;
@@ -165,7 +165,7 @@ namespace EventLoggerDesktop {
 			// 
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
-			this->label3->Location = System::Drawing::Point(522, 79);
+			this->label3->Location = System::Drawing::Point(523, 65);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(78, 18);
 			this->label3->TabIndex = 5;
@@ -177,7 +177,7 @@ namespace EventLoggerDesktop {
 			this->dateTimePicker1->CustomFormat = L"yyyy-MM-dd";
 			this->dateTimePicker1->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
 			this->dateTimePicker1->ImeMode = System::Windows::Forms::ImeMode::NoControl;
-			this->dateTimePicker1->Location = System::Drawing::Point(876, 117);
+			this->dateTimePicker1->Location = System::Drawing::Point(893, 101);
 			this->dateTimePicker1->Name = L"dateTimePicker1";
 			this->dateTimePicker1->Size = System::Drawing::Size(297, 26);
 			this->dateTimePicker1->TabIndex = 6;
@@ -187,7 +187,7 @@ namespace EventLoggerDesktop {
 			// 
 			this->dateTimePicker2->CustomFormat = L"yyyy-MM-dd";
 			this->dateTimePicker2->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
-			this->dateTimePicker2->Location = System::Drawing::Point(876, 155);
+			this->dateTimePicker2->Location = System::Drawing::Point(893, 177);
 			this->dateTimePicker2->Name = L"dateTimePicker2";
 			this->dateTimePicker2->Size = System::Drawing::Size(297, 26);
 			this->dateTimePicker2->TabIndex = 7;
@@ -197,7 +197,7 @@ namespace EventLoggerDesktop {
 			// 
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
-			this->label4->Location = System::Drawing::Point(872, 79);
+			this->label4->Location = System::Drawing::Point(890, 65);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(68, 18);
 			this->label4->TabIndex = 8;
@@ -206,21 +206,23 @@ namespace EventLoggerDesktop {
 			// 
 			// button1
 			// 
+			this->button1->BackColor = System::Drawing::Color::Navy;
 			this->button1->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
+			this->button1->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->button1->Location = System::Drawing::Point(526, 300);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(647, 44);
 			this->button1->TabIndex = 9;
 			this->button1->Text = L"Submit";
-			this->button1->UseVisualStyleBackColor = true;
+			this->button1->UseVisualStyleBackColor = false;
 			this->button1->Visible = false;
 			this->button1->Click += gcnew System::EventHandler(this, &AppForm::button1_Click);
 			// 
 			// numericUpDown1
 			// 
-			this->numericUpDown1->Location = System::Drawing::Point(705, 117);
+			this->numericUpDown1->Location = System::Drawing::Point(705, 101);
 			this->numericUpDown1->Name = L"numericUpDown1";
-			this->numericUpDown1->Size = System::Drawing::Size(120, 26);
+			this->numericUpDown1->Size = System::Drawing::Size(159, 26);
 			this->numericUpDown1->TabIndex = 10;
 			this->numericUpDown1->Visible = false;
 			// 
@@ -228,7 +230,7 @@ namespace EventLoggerDesktop {
 			// 
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
-			this->label5->Location = System::Drawing::Point(701, 79);
+			this->label5->Location = System::Drawing::Point(702, 65);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(28, 18);
 			this->label5->TabIndex = 11;
@@ -239,7 +241,7 @@ namespace EventLoggerDesktop {
 			// 
 			this->checkBox1->AutoSize = true;
 			this->checkBox1->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
-			this->checkBox1->Location = System::Drawing::Point(526, 252);
+			this->checkBox1->Location = System::Drawing::Point(526, 248);
 			this->checkBox1->Name = L"checkBox1";
 			this->checkBox1->Size = System::Drawing::Size(174, 22);
 			this->checkBox1->TabIndex = 12;
@@ -255,7 +257,7 @@ namespace EventLoggerDesktop {
 			// 
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
-			this->label6->Location = System::Drawing::Point(39, 256);
+			this->label6->Location = System::Drawing::Point(40, 252);
 			this->label6->Name = L"label6";
 			this->label6->Size = System::Drawing::Size(68, 18);
 			this->label6->TabIndex = 13;
@@ -264,7 +266,7 @@ namespace EventLoggerDesktop {
 			// 
 			// richTextBox1
 			// 
-			this->richTextBox1->Location = System::Drawing::Point(43, 300);
+			this->richTextBox1->Location = System::Drawing::Point(42, 284);
 			this->richTextBox1->Name = L"richTextBox1";
 			this->richTextBox1->Size = System::Drawing::Size(431, 181);
 			this->richTextBox1->TabIndex = 14;
@@ -275,7 +277,7 @@ namespace EventLoggerDesktop {
 			// 
 			this->label7->AutoSize = true;
 			this->label7->Font = (gcnew System::Drawing::Font(L"MS Gothic", 9, System::Drawing::FontStyle::Bold));
-			this->label7->Location = System::Drawing::Point(701, 161);
+			this->label7->Location = System::Drawing::Point(702, 146);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(68, 18);
 			this->label7->TabIndex = 16;
@@ -284,9 +286,9 @@ namespace EventLoggerDesktop {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(705, 194);
+			this->textBox1->Location = System::Drawing::Point(705, 179);
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(120, 26);
+			this->textBox1->Size = System::Drawing::Size(159, 26);
 			this->textBox1->TabIndex = 17;
 			this->textBox1->Visible = false;
 			// 
