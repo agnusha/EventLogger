@@ -13,6 +13,92 @@ class EventLogger
     private:
         string result;
 
+        // Get the list of paths specified in the query or the list of status values 
+        // for each path.
+        DWORD GetQueryStatusProperty(EVT_QUERY_PROPERTY_ID Id, EVT_HANDLE hResults, PEVT_VARIANT& pProperty)
+        {
+            DWORD status = ERROR_SUCCESS;
+            DWORD dwBufferSize = 0;
+            DWORD dwBufferUsed = 0;
+
+            if (!EvtGetQueryInfo(hResults, Id, dwBufferSize, pProperty, &dwBufferUsed))
+            {
+                status = GetLastError();
+                if (ERROR_INSUFFICIENT_BUFFER == status)
+                {
+                    dwBufferSize = dwBufferUsed;
+                    pProperty = (PEVT_VARIANT)malloc(dwBufferSize);
+                    if (pProperty)
+                    {
+                        EvtGetQueryInfo(hResults, Id, dwBufferSize, pProperty, &dwBufferUsed);
+                    }
+                    else
+                    {
+                        wprintf(L"realloc failed\n");
+                        status = ERROR_OUTOFMEMORY;
+                        goto cleanup;
+                    }
+                }
+
+                if (ERROR_SUCCESS != (status = GetLastError()))
+                {
+                    wprintf(L"EvtGetQueryInfo failed with %d\n", GetLastError());
+                    goto cleanup;
+                }
+            }
+
+        cleanup:
+
+            return status;
+        }
+
+        DWORD PrintEvent(EVT_HANDLE hEvent)
+        {
+            DWORD status = ERROR_SUCCESS;
+            DWORD dwBufferSize = 0;
+            DWORD dwBufferUsed = 0;
+            DWORD dwPropertyCount = 0;
+            LPWSTR pRenderedContent = NULL;
+
+            // The EvtRenderEventXml flag tells EvtRender to render the event as an XML string.
+            if (!EvtRender(NULL, hEvent, EvtRenderEventXml, dwBufferSize, pRenderedContent, &dwBufferUsed, &dwPropertyCount))
+            {
+                if (ERROR_INSUFFICIENT_BUFFER == (status = GetLastError()))
+                {
+                    dwBufferSize = dwBufferUsed;
+                    pRenderedContent = (LPWSTR)malloc(dwBufferSize);
+                    if (pRenderedContent)
+                    {
+                        EvtRender(NULL, hEvent, EvtRenderEventXml, dwBufferSize, pRenderedContent, &dwBufferUsed, &dwPropertyCount);
+                    }
+                    else
+                    {
+                        wprintf(L"malloc failed\n");
+                        status = ERROR_OUTOFMEMORY;
+                        goto cleanup;
+                    }
+                }
+
+                if (ERROR_SUCCESS != (status = GetLastError()))
+                {
+                    wprintf(L"EvtRender failed with %d\n", GetLastError());
+                    goto cleanup;
+                }
+            }
+
+            if (pRenderedContent != 0) {
+                result += CW2A(pRenderedContent);
+                result += CW2A(L"\n\n");
+            }
+
+        cleanup:
+
+            if (pRenderedContent)
+                free(pRenderedContent);
+
+            return status;
+        }
+
 	public:
         //todo destructor
         void close()
@@ -26,6 +112,7 @@ class EventLogger
             return result;
         }
 
+        //convert string to wstring
         wstring s2ws(const string& s)
         {
             int len;
@@ -155,91 +242,4 @@ class EventLogger
 
             return status;
         }
-
-        // Get the list of paths specified in the query or the list of status values 
-        // for each path.
-        DWORD GetQueryStatusProperty(EVT_QUERY_PROPERTY_ID Id, EVT_HANDLE hResults, PEVT_VARIANT& pProperty)
-        {
-            DWORD status = ERROR_SUCCESS;
-            DWORD dwBufferSize = 0;
-            DWORD dwBufferUsed = 0;
-
-            if (!EvtGetQueryInfo(hResults, Id, dwBufferSize, pProperty, &dwBufferUsed))
-            {
-                status = GetLastError();
-                if (ERROR_INSUFFICIENT_BUFFER == status)
-                {
-                    dwBufferSize = dwBufferUsed;
-                    pProperty = (PEVT_VARIANT)malloc(dwBufferSize);
-                    if (pProperty)
-                    {
-                        EvtGetQueryInfo(hResults, Id, dwBufferSize, pProperty, &dwBufferUsed);
-                    }
-                    else
-                    {
-                        wprintf(L"realloc failed\n");
-                        status = ERROR_OUTOFMEMORY;
-                        goto cleanup;
-                    }
-                }
-
-                if (ERROR_SUCCESS != (status = GetLastError()))
-                {
-                    wprintf(L"EvtGetQueryInfo failed with %d\n", GetLastError());
-                    goto cleanup;
-                }
-            }
-
-        cleanup:
-
-            return status;
-        }
-
-        DWORD PrintEvent(EVT_HANDLE hEvent)
-        {
-            DWORD status = ERROR_SUCCESS;
-            DWORD dwBufferSize = 0;
-            DWORD dwBufferUsed = 0;
-            DWORD dwPropertyCount = 0;
-            LPWSTR pRenderedContent = NULL;
-
-            // The EvtRenderEventXml flag tells EvtRender to render the event as an XML string.
-            if (!EvtRender(NULL, hEvent, EvtRenderEventXml, dwBufferSize, pRenderedContent, &dwBufferUsed, &dwPropertyCount))
-            {
-                if (ERROR_INSUFFICIENT_BUFFER == (status = GetLastError()))
-                {
-                    dwBufferSize = dwBufferUsed;
-                    pRenderedContent = (LPWSTR)malloc(dwBufferSize);
-                    if (pRenderedContent)
-                    {
-                        EvtRender(NULL, hEvent, EvtRenderEventXml, dwBufferSize, pRenderedContent, &dwBufferUsed, &dwPropertyCount);
-                    }
-                    else
-                    {
-                        wprintf(L"malloc failed\n");
-                        status = ERROR_OUTOFMEMORY;
-                        goto cleanup;
-                    }
-                }
-
-                if (ERROR_SUCCESS != (status = GetLastError()))
-                {
-                    wprintf(L"EvtRender failed with %d\n", GetLastError());
-                    goto cleanup;
-                }
-            }
-
-            if (pRenderedContent != 0){
-                result += CW2A(pRenderedContent);
-                result += CW2A(L"\n\n");
-            }
-
-        cleanup:
-
-            if (pRenderedContent)
-                free(pRenderedContent);
-
-            return status;
-        }
 };
-
