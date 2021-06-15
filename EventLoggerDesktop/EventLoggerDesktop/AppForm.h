@@ -213,7 +213,7 @@ namespace EventLoggerDesktop {
 			// numericUpDown1
 			// 
 			this->numericUpDown1->Location = System::Drawing::Point(705, 101);
-			this->numericUpDown1->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 100000, 0, 0, 0 });
+			this->numericUpDown1->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10000000, 0, 0, 0 });
 			this->numericUpDown1->Name = L"numericUpDown1";
 			this->numericUpDown1->Size = System::Drawing::Size(159, 26);
 			this->numericUpDown1->TabIndex = 10;
