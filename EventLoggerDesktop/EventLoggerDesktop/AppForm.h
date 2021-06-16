@@ -571,11 +571,15 @@ namespace EventLoggerDesktop {
 				this->errorProvider1->SetError(this->numericUpDown1, "Set Id");
 				return;
 			}
+			else
+				this->errorProvider1->Clear();
 
 			if (this->textBox1->Text == "") {
 				this->errorProvider1->SetError(this->textBox1, "Set source");
 				return;
 			}
+			else
+				this->errorProvider1->Clear();
 #pragma endregion
 
 
